@@ -39,6 +39,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
+    # Third party apps
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.github",
+    # Local apps
+    "auser",
 ]
 
 MIDDLEWARE = [
@@ -124,3 +132,42 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# The ID, as an integer, of the current site in the django_site database table.
+
+SITE_ID = 1
+
+# A list of authentication backend classes to use when attempting to authenticate a user.
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+# django-allauth settings
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_CONFIRMATION_COOLDOWN = 5 * 60
+ACCOUNT_USERNAME_BLACKLIST = config(
+    "RESERVED_USERNAMES", cast=Csv(post_process=list), default=[]
+)
+
+SOCIALACCOUNT_PROVIDERS = {
+    "github": {
+        "SCOPE": [
+            "user",
+            "repo",
+            "read:org",
+        ],
+    }
+}
+
+
+if DEBUG:
+    # The backend to use for sending emails.
+    EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+
+    # The directory used by the file email backend to store output files.
+    EMAIL_FILE_PATH = BASE_DIR / "emails"
