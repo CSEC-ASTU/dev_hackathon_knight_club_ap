@@ -1,0 +1,58 @@
+{% extends "layouts/main.html" %}
+{% load i18n static humanize  %}
+{% block content %}
+            <div class="float-end">
+                <a href="{% url 'auser:add_club' %}" class="mx-2 btn btn-sm btn-success shadow-none"><i data-feather="plus"></i> {% translate "Add club" %}</a>
+                <a href="{% url 'auser:list_deactivated_clubs' %}" class="mx-2 btn btn-sm btn-warning shadow-none"><i data-feather="list"></i> {% translate "Deactivated clubs" %}</a>
+            </div><hr>
+            <table class="table shadow-lg w-100" id="dt_table_active_clubs">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>{% translate "Name" %}</th>
+                  <th>{% translate "Short name" %}</th>
+                  <th>{% translate "Username" %}</th>
+                  <th>{% translate "Email" %}</th>
+                  <th>{% translate "Phone number" %}</th>
+                  <th>{% translate "Active" %}</th>
+                  <th>{% translate "Manage" %}</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody class="w-100">{% if clubs %}
+                {% for club in clubs %}<tr>
+                  <td class="details-control px-3">{{ forloop.counter }}</td>
+                  <td>{{ club.name }}</td>
+                  <td>{{ club.short_name }}</td>
+                  <td>{{ club.username }}</td>
+                  <td>{{ club.email }}</td>
+                  <td>{{ club.phone_number }}</td>
+                  <td>{{ club.is_active }}</td>
+                  <td>
+                    <div class="btn-group rounded" role="group" aria-label="Management buttons">
+                      <a href="{% url 'auser:club_detail' club.slug %}" class="btn btn-md btn-outline-dark shadow-none">{% translate "Details" %}</a>
+                      {% if perms.auser.change_club %}<a href="{% url 'auser:edit_club' club.slug %}" class="btn btn-md btn-outline-secondary shadow-none">{% translate "Update" %}</a>{% endif %}
+                      {% if perms.auser.deactivate_club %}<button class="btn btn-md btn-outline-danger shadow-none" data-bs-toggle="modal" data-bs-target="#deactivate-club-{{ club.username }}">{% translate "Deactivate" %}</button>{% endif %}
+                    </div>
+                  </td>
+                  <td>{% if perms.auser.deactivate_club %}
+                    <div class="modal fade" id="deactivate-club-{{ club.username }}" tabindex="-1" aria-labelledby="Deactivate Club" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-body">
+                            {% blocktranslate with name=club.name %}Do you really wants to deactivate <strong>{{ name }}?</strong> Club will not able to login.{% endblocktranslate %}
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-success shadow-none" data-bs-dismiss="modal" aria-label="Close">{% translate "Cancel" %}</button>
+                            <form action="{% url 'auser:deactivate_club' club.slug %}" method="post">{% csrf_token %}
+                              <input class="btn btn-danger btn-sm shadow-none" type="submit" value="{% translate 'I understand, deactivate!' %}" />
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}</td>
+                </tr>{% endfor %}
+              {% endif %}</tbody>
+          </table>{% endblock content %}
+{% block js %}<script>$('#dt_table_active_clubs').DataTable({}) </script>{% endblock js %}

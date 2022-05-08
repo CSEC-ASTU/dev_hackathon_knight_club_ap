@@ -12,7 +12,7 @@ paypalrestsdk.configure({
 
 
 
-def pay_with_paypal(data):
+async def pay_with_paypal(data):
     payment = paypalrestsdk.Payment({
         "intent": "sale",
         "payer": {
@@ -55,12 +55,12 @@ def pay_with_paypal(data):
                 print(e)
     payment_history = paypalrestsdk.Payment.all()
 
-    # List Payments
-    print("List Payment:")
+    # List
+    logging.info("List Payment:")
     for payment in payment_history.payments:
-        print("  -> Payment[%s]" % (payment.id))
+        logging.info("  -> Payment[%s]" % (payment.id))
         payment = paypalrestsdk.Payment.find(payment.id)
-        print(payment)
+        # print(payment)
     return {'status_url': f'https://www.paypal.com/checkoutnow?token={pay_id}',
             'txn_id': paypal_transaction_id,
             'error': 'ok',

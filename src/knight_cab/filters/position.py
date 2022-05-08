@@ -1,5 +1,6 @@
 from data import auth
 from aiogram import types
+import requests
 
 
 def get_user_info():
@@ -8,7 +9,7 @@ def get_user_info():
         "username": "test",
         "first_name": "test",
         "last_name": "test",
-        "position": "admin",
+        "position": "guest",
     }
     return user_data
 

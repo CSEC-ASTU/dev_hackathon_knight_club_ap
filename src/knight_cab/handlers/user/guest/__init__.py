@@ -2,6 +2,8 @@ from aiogram import Dispatcher, types
 from aiogram.dispatcher.filters import Text
 import re
 
+from handlers.user.guest.payment.paypal import pay_with_paypal
+
 from .feedback_handler import (
     send_email_feed,
     process_feedback,

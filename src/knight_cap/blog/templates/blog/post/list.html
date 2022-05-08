@@ -1,0 +1,56 @@
+{% load i18n static comments humanize auser %}
+<table class="table shadow-lg w-100" id="dt_table_blogs">
+  <div class="d-flex justify-content-end">{% if perms.blog.add_post %}
+    <a href="{% url "blog:add_post" %}" class="mx-2 btn btn-sm btn-success shadow-none"><i data-feather="plus"></i> {% translate "Add blog post" %}</a>{% endif %}
+  </div><hr/>
+  <thead>
+    <tr>
+      <th></th>
+      <th>{% translate "Title" %}</th>
+      <th>{% translate "Author" %}</th>
+      <th>{% translate "Published" %}</th>
+      <th>{% translate "Modified On" %}</th>
+      <th>{% translate "Created On" %}</th>
+      <th>{% translate "Comments" %}</th>
+      <th>{% translate "Likes" %}</th>
+      <th></th>
+      <th>{% translate "Manage" %}</th>
+    </tr>
+  </thead>
+  <tbody class="w-100">
+    {% for post in posts %}<tr>
+      <td>{{ forloop.counter }}</td>
+      <td>{{ post.title|truncatechars:20 }}</td>
+      <td>{{ post.author.get_full_name }}</td>
+      <td>{{ post.is_draft|yesno:"No,Yes" }}</td>
+      <td>{{ post.updated_on|naturaltime }}</td>
+      <td>{{ post.created_on|naturaltime }}</td>
+      {% get_comment_count for post as comment_count %}
+      {% with request.resolver_match as r %}
+      <td><a href="{% url "comment:comment_list" r.app_name model_name post.pk %}"> {{ comment_count }} comment</a></td>{% endwith %}
+      <td>{{ post.likes.count }}</td>
+      <td></td>
+      <td>
+        <div class="btn-group rounded" role="group" aria-label="Management buttons">
+          {% if perms.blog.change_post %}<a href="{% url 'blog:update_post' post.slug %}" class="btn btn-primary btn-sm">{% translate "Update" %}</a>{% endif %}
+          {% if perms.blog.delete_post %}<button class="btn btn-sm btn-danger shadow-none" data-bs-toggle="modal" data-bs-target="#delete-{{ post.pk }}">{% translate "Delete" %}</button>{% endif %}
+        </div>
+      </td>{% if perms.blog.delete_post %}
+      <div class="modal fade" id="deactivate-{{ post.pk }}" tabindex="-1" aria-labelledby="Delete blog" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              {% blocktranslate with title=post.title %}Do you really wants to delete <strong>{{ title }}?</strong><span class="text-danger"> <h6>This action is irreversable.</h6></span>{% endblocktranslate %}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-sm btn-success shadow-none" data-bs-dismiss="modal" aria-label="Close">{% translate "Cancel" %}</button>
+              <form action={% url 'blog:delete_post' post.slug %} method="post">{% csrf_token %}
+                <input class="btn btn-danger btn-sm shadow-none" type="submit" value="{% translate "I understand, delete!" %}" />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>{% endif %}
+    </tr>{% endfor %}
+  </tbody>
+</table>

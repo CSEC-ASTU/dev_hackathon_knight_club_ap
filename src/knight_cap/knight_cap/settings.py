@@ -14,6 +14,7 @@ from pathlib import Path
 
 from decouple import Csv, config
 from dj_database_url import parse as db_url
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +40,23 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.humanize",
+    "django.contrib.sites",
+    # Third party apps
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.github",
+    "widget_tweaks",
+    "ckeditor",
+    "django_social_share",
+    "django_filters",
+    "django_comments",
+    # Local apps
+    "auser",
+    "blog",
+    "comment",
+    "forum",
 ]
 
 MIDDLEWARE = [
@@ -56,7 +74,7 @@ ROOT_URLCONF = "knight_cap.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ["templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -118,9 +136,77 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = "/static/"
+STATIC_URL = "/assets/"
+
+STATIC_ROOT = BASE_DIR / "assetts"
+
+MEDIA_URL = "/upload/"
+
+MEDIA_ROOT = BASE_DIR / "upload"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# The ID, as an integer, of the current site in the django_site database table.
+
+SITE_ID = 1
+
+
+AUTH_USER_MODEL = "auser.User"
+# A list of authentication backend classes to use when attempting to authenticate a user.
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+# django-allauth settings
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_CONFIRMATION_COOLDOWN = 5 * 60
+ACCOUNT_USERNAME_BLACKLIST = config(
+    "RESERVED_USERNAMES", cast=Csv(post_process=list), default=[]
+)
+
+# This setting defines the additional locations the staticfiles app will traverse
+STATICFILES_DIRS = (BASE_DIR / "static",)
+
+SOCIALACCOUNT_PROVIDERS = {
+    "github": {
+        "SCOPE": [
+            "user",
+            "repo",
+            "read:org",
+        ],
+    }
+}
+
+MESSAGE_TAGS = {
+    messages.DEBUG: "alert-secondary",
+    messages.INFO: "alert-info",
+    messages.SUCCESS: "alert-success",
+    messages.WARNING: "alert-warning",
+    messages.ERROR: "alert-danger",
+}
+
+
+FILTERS_VERBOSE_LOOKUPS = {
+    "exact": "",
+    "iexact": "",
+    "contains": "",
+    "icontains": "",
+}
+
+# An app which provides customization of the comments framework
+COMMENTS_APP = "comment"
+
+if DEBUG:
+    # The backend to use for sending emails.
+    EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+
+    # The directory used by the file email backend to store output files.
+    EMAIL_FILE_PATH = BASE_DIR / "emails"

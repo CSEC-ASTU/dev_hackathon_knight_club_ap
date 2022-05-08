@@ -1,0 +1,60 @@
+{% load i18n static %}
+{% load i18n static comments humanize auser %}
+
+<table class="table shadow-lg w-100" id="dt_table_categories">
+    <div class="d-flex justify-content-end">{% if perms.blog.add_tag %}
+        <a href="{% url "blog:add_tag" %}" class="mx-2 btn btn-sm btn-success shadow-none"><i data-feather="plus"></i> {% translate "Add tag" %}</a>{% endif %}
+    </div>
+    <hr>
+    <thead>
+        <tr>
+            <th>{% translate "Name" %}</th>
+            <th>{% translate "Description" %}</th>
+            <th>{% translate "Post count" %}</th>
+            <th>{% translate "Course count" %}</th>
+            <th>{% translate "Forums count" %}</th>
+            <th>{% translate "Created at" %}</th>
+            <th>{% translate "Update at" %}</th>
+            <th>{% translate "Manage" %}</th>
+        </tr>
+    </thead>
+    <tbody class="w-100">
+        {% for tag in tags %}
+            <tr>
+                
+                <td>{{ tag.name }}</td>
+                <td>{{ tag.description|truncatechars:100 }}</td>
+                <td>{{ tag.posts.count }}</td>
+                <td>{{ tag.courses.count }}</td>
+                <td>{{ tag.forums.count }}</td>
+                <td>{{ tag.updated_at|naturaltime }}</td>
+                <td>{{ tag.created_at|naturaltime }}</td>
+                <td>
+                    <div class="btn-group rounded" role="group" aria-label="Management buttons">
+                    {% if perms.blog.change_tag %}<a href="{% url 'blog:update_tag' tag.slug %}" class="btn btn-outline-primary btn-sm">{% translate "Update" %}</a>{% endif %}
+                    {% if perms.blog.delete_tag %}<button class="btn btn-sm btn-outline-danger shadow-none"
+                                data-bs-toggle="modal"
+                                data-bs-target="#delete-{{ tag.slug }}">{% translate "Delete" %}</button>{% endif %}
+                    </div>
+                </td>
+                    {% if perms.blog.delete_post %}
+                    <div class="modal fade" id="deactivate-{{ tag.slug }}" tabindex="-1" aria-labelledby="Delete blog" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-body">
+                            {% blocktranslate with title=tag.title %}Do you really wants to delete <strong>{{ title }}?</strong><span class="text-danger"> <h6>This action is irreversable.</h6></span>{% endblocktranslate %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-success shadow-none" data-bs-dismiss="modal" aria-label="Close">{% translate "Cancel" %}</button>
+                            <form action={% url 'blog:delete_tag' tag.slug %} method="post">{% csrf_token %}
+                                <input class="btn btn-danger btn-sm shadow-none" type="submit" value="{% translate "I understand, delete!" %}" />
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

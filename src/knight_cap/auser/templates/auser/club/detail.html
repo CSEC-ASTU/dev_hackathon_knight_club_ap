@@ -1,0 +1,13 @@
+{% extends "layouts/main.html" %}
+{% load i18n %}
+{% block content %}
+<a class="btn btn-primary" href="{% url 'auser:add_division' club.slug %}">Add Division</a>
+<ul class="nav nav-tabs mt-5 mb-3" id="UserDetail" role="tablist">
+</ul>
+<div class="tab-content" id="UserDetailContent">
+<div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="home-tab">
+    {% include "auser/division/list.html" with divisions=club.divisions.iterator %}
+</div>
+</div>
+{% endblock content %}
+{% block js %}<script>$('#dt_table_active_clubs').DataTable({}) </script>{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'bases/main.html' %}{% block extra-style %} {% load static %}
+<meta name="google" content="notranslate" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" /> {% endblock extra-style %} {% block main %} {% load social_share %}
+<div class="container ">
+    {% for mes in messages %}
+    <div classs="p-5 ">
+        <div class="alert alert-success " role="alert ">
+            {{ mes }}
+        </div>
+    </div>
+    {% endfor %}
+    <div>
+        <a href="{% url 'delete_blog' object.id %} ">DELETE</a>
+    </div>
+    <div>
+        <a href="{% url 'update' object.slug %} ">Update</a>
+    </div>
+    <div>
+
+        <a href="{% url 'home' %} ">Home</a>
+    </div>
+    <div class="row ">
+        <div class="col-md-8 card mb-4 mt-3 left top ">
+            <div class="card-body ">
+                <h1>{% block title %} {{ object.title }} {% endblock title %}</h1>
+                <p class=" text-muted ">{{ post.author }} | {{ post.created_on }}</p>
+                <p class="card-text ">{{ object.content | safe }}</p>
+
+            </div>
+
+        </div>
+        <div>
+
+            {{ post.likes.count }} - Likes
+            <a href="{% url 'like_post' post.id %} ">Like</a>
+
+        </div>
+
+        <br>
+        <div>
+            {% post_to_facebook "New Blog:- {{ object.title }} " object_or_url "Post to Facebook! " %} {% post_to_twitter "New ong: Awasome song. chec it out " object_or_url "Post to Twitter " %}
+            <br> {% post_to_telegram "New Song:{{object.title}} " object_or_url "Post to Telegram " %}
+            <br>{% post_to_linkedin object_or_url "Share to linkedin " %}
+        </div> {% block sidebar %} {% include 'blog/sidebar.html' %} {% endblock sidebar %}
+    </div>
+</div>
+
+{% endblock main %} <br> {% block extra-script %}
+<script src="{% static 'js/bootstrap.js' %} "></script>{% endblock extra-script %}
