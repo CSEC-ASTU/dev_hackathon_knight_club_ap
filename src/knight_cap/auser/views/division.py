@@ -3,11 +3,11 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import Http404
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
-
-from auser.models import Club, Division
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  UpdateView)
 
 from auser.mixins import ClubRequiredMixin
+from auser.models import Club, Division
 
 
 class DivisionCreateView(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
@@ -28,7 +28,7 @@ class DivisionCreateView(PermissionRequiredMixin, SuccessMessageMixin, CreateVie
     extra_context = {"title": _("Add division")}
 
     def get_success_url(self):
-        return reverse_lazy("auser:division_detail", kwargs={'slug': self.object.slug})
+        return reverse_lazy("auser:division_detail", kwargs={"slug": self.object.slug})
 
     def get_division(self):
         division_pk = self.kwargs.get("division_slug", None)
@@ -53,7 +53,6 @@ class DivisionCreateView(PermissionRequiredMixin, SuccessMessageMixin, CreateVie
         return super().form_valid(form)
 
 
-
 class DivisionDetailView(PermissionRequiredMixin, ClubRequiredMixin, DetailView):
     model = Division
     permission_required = ("auser.view_division",)
@@ -61,7 +60,9 @@ class DivisionDetailView(PermissionRequiredMixin, ClubRequiredMixin, DetailView)
     extra_context = {"title": _("Division")}
 
 
-class DivisionUpdateView(PermissionRequiredMixin, ClubRequiredMixin, SuccessMessageMixin, UpdateView):
+class DivisionUpdateView(
+    PermissionRequiredMixin, ClubRequiredMixin, SuccessMessageMixin, UpdateView
+):
     model = Division
     fields = (
         "name",
@@ -77,8 +78,7 @@ class DivisionUpdateView(PermissionRequiredMixin, ClubRequiredMixin, SuccessMess
     extra_context = {"title": _("Update division")}
 
     def get_success_url(self):
-        return reverse_lazy("auser:division_detail", kwargs={'slug': self.object.slug})
-
+        return reverse_lazy("auser:division_detail", kwargs={"slug": self.object.slug})
 
 
 class DeleteDivisionView(PermissionRequiredMixin, DeleteView):
@@ -91,8 +91,11 @@ class DeleteDivisionView(PermissionRequiredMixin, DeleteView):
     def delete(self, *args, **kwargs):
         division = self.get_object()
         if division.parent:
-            self.success_url = reverse_lazy("auser:division_detail", kwargs={'slug': division.parent.slug})
+            self.success_url = reverse_lazy(
+                "auser:division_detail", kwargs={"slug": division.parent.slug}
+            )
         else:
-            self.success_url = reverse_lazy("auser:club_detail", kwargs={'slug': division.club.slug})
+            self.success_url = reverse_lazy(
+                "auser:club_detail", kwargs={"slug": division.club.slug}
+            )
         return super().delete(*args, **kwargs)
-

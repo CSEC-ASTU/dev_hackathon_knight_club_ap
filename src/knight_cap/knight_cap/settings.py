@@ -14,8 +14,8 @@ from pathlib import Path
 
 from decouple import Csv, config
 from dj_database_url import parse as db_url
-
 from django.contrib.messages import constants as messages
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -173,9 +173,7 @@ ACCOUNT_USERNAME_BLACKLIST = config(
 )
 
 # This setting defines the additional locations the staticfiles app will traverse
-STATICFILES_DIRS = (
-    BASE_DIR / "static",
-)
+STATICFILES_DIRS = (BASE_DIR / "static",)
 
 SOCIALACCOUNT_PROVIDERS = {
     "github": {

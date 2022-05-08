@@ -56,12 +56,25 @@ division_urlpatterns = [
         views.DivisionCreateView.as_view(),
         name="add_sub_division",
     ),
-    re_path(r'^(?P<slug>[-a-zA-Z0-9_]+)/$', views.DivisionDetailView.as_view(), name="division_detail"),
-    re_path(r"^(?P<slug>[-a-zA-Z0-9_]+)/edit/$", views.DivisionUpdateView.as_view(), name='edit_division'),
-    re_path(r"^(?P<slug>[-a-zA-Z0-9_]+)/delete/$", views.DeleteDivisionView.as_view(), name='delete_division'),
+    re_path(
+        r"^(?P<slug>[-a-zA-Z0-9_]+)/$",
+        views.DivisionDetailView.as_view(),
+        name="division_detail",
+    ),
+    re_path(
+        r"^(?P<slug>[-a-zA-Z0-9_]+)/edit/$",
+        views.DivisionUpdateView.as_view(),
+        name="edit_division",
+    ),
+    re_path(
+        r"^(?P<slug>[-a-zA-Z0-9_]+)/delete/$",
+        views.DeleteDivisionView.as_view(),
+        name="delete_division",
+    ),
 ]
 
 urlpatterns = [
+    re_path(r"^profile/edit/$", views.ProfileEditView.as_view(), name="profile_edit"),
     re_path(r"^club/", include(club_urlpatterns)),
     re_path(r"^division/", include(division_urlpatterns)),
 ]

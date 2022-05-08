@@ -5,7 +5,7 @@
           <img src="{{ user.profile_picture.url }}" alt="profile-picture" class="img-fluid rounded-pill profile-img" />
         </button>
         <ul class="dropdown-menu dropdown-menu-dark p-0 " aria-labelledby="ProfileMenu">
-          <li><a class="dropdown-item p-2" href="#"><i data-feather="edit"></i> {% translate "Profile" %}</a></li>
+          <li><a class="dropdown-item p-2" href="{% url 'auser:profile_edit' %}"><i data-feather="edit"></i> {% translate "Profile" %}</a></li>
           <li><a class="dropdown-item p-2" href="{% url 'account_change_password' %}"><i data-feather="edit"></i> {% translate "Change password" %}</a></li>
           <li><a class="dropdown-item p-2 text-light bg-danger" href="{% url 'account_logout' %}"><i data-feather="log-out"></i> {% translate "Logout" %}</a></li>
         </ul>

@@ -190,7 +190,7 @@ class Division(models.Model):
         verbose_name = _("division")
         verbose_name_plural = _("divisions")
         db_table = "division"
-        unique_together = [('club', 'name')]
+        unique_together = [("club", "name")]
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
