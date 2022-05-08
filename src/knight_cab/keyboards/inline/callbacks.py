@@ -6,6 +6,8 @@ NON_MEMBERS = {
         ("❔ Seminar", "send_fn_sem"),
         ("🗒 Register", "send_fn_reg"),
         ("📤 Contact", "send_e_feed"),
+        ("🪑 Book a seat", "book_seat"),
+        ("💳 Donate", "donate"),
     ],
     "divisions": [
         ("👨‍💻 Development", "ex_development"),
@@ -48,5 +50,4 @@ MEMBERS = {
         ("👨‍💻 Development", "my_development"),
         ("📊 Comp. Programming", "my_competitive-programming"),
     ],
-    
 }

@@ -35,6 +35,8 @@ from .registration_handler import (
 
 from .club_exhibit import detail_options
 
+from .donate import donating_options
+
 
 def setup(dp: Dispatcher):
     dp.register_message_handler(
@@ -67,6 +69,9 @@ def setup(dp: Dispatcher):
     )
     dp.register_callback_query_handler(
         detail_options, lambda call: call.data.startswith("ex_")
+    )
+    dp.register_callback_query_handler(
+        donating_options, lambda call: call.data == "donate"
     )
     ############################################################################
     dp.register_message_handler(process_feedback_email, state=FeedBackForm.email)

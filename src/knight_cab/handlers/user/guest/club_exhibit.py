@@ -14,4 +14,6 @@ async def detail_options(call: types.CallbackQuery):
     )
 
     # print(dir(call.message))
-    await call.message.edit_reply_markup(markup) # f"<b>{call.data.split('_')[1]}</b>", reply_markup=markup)
+    await call.message.edit_reply_markup(
+        markup
+    )  # f"<b>{call.data.split('_')[1]}</b>", reply_markup=markup)

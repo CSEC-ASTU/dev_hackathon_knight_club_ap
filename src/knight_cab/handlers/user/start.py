@@ -44,5 +44,6 @@ async def bot_start(msg: types.Message):
             reply_markup=markup,
         )
 
+
 async def callback_start(call: types.CallbackQuery):
     await bot_start(call.message)
