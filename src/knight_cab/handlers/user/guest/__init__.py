@@ -38,7 +38,7 @@ from .registration_handler import (
 
 from .club_exhibit import detail_options
 
-from .donate import donating_options, donate_with_paypal
+from .donate import donating_options, pay_w_paypal
 from .payment.direct_bank import display_bank_details
 
 def setup(dp: Dispatcher):
@@ -77,7 +77,7 @@ def setup(dp: Dispatcher):
         donating_options, lambda call: call.data == "donate"
     )
     dp.register_callback_query_handler(
-        pay_with_paypal, lambda call: call.data == "paypal"
+        pay_w_paypal, lambda call: call.data == "paypal"
     )
     dp.register_callback_query_handler(
         display_bank_details, lambda call: call.data == "bank_transfer"

@@ -4,7 +4,6 @@ from filters import position
 from keyboards.inline import callbacks
 
 
-
 async def display_bank_details(call: types.CallbackQuery):
-    text = "<b>You can donate to our CBE account:</b>\n <i>1000213242354352343</i> \n"
-    await call.message.edit_text(text, parse_mode="HTML")
+    text = "You can support us via our Various Bank Accounts<b>\n\n\nName : CSEC-ASTU \n\nNib Bank Account: 100023453323454324354\n\nCBE Bank Account: 100023453323454324354\n\nDashin Bank Account: 100023453323454324354</b>"
+    await call.message.bot.send_message(call.from_user.id, text, parse_mode="HTML")

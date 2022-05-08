@@ -44,10 +44,28 @@ MEMBERS = {
         ("🗂 My Divisions", "my_divisions"),
         ("❔ Seminar", "send_fn_sem"),
         ("🗒 Register", "send_fn_reg"),
-        ("📤 Contact", "send_e_feed"),
+        ("🏆 Hall of fame", "hof"),
     ],
     "My Divisions": [
-        ("👨‍💻 Development", "my_development"),
-        ("📊 Comp. Programming", "my_competitive-programming"),
+        ("👨‍💻 Development", "development_m"),
+        ("📊 Comp. Programming", "competitive-programming_m"),
     ],
+    "Development": [
+        ("🎖 Top Projects", "development_top"),
+        ("📈 Statistics", "development_s"),
+    ],
+    "Competitive-Programming": [
+        ("📊 Scoreboard", "competitive-programming_s"),
+        ("📋 Schedule", "competitive-programming_sch"),
+    ]
+    
+}
+
+
+ADMINS = {
+    "start": [
+        ("📊 Statistics", "statistics"),
+        ("🎇 Add Event", "add_event"),
+        ("📋 Schedule", "admin_schedule"),
+    ]
 }
