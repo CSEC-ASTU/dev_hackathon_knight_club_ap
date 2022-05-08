@@ -2,6 +2,7 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.utils.markdown import bold, hbold, hitalic, hcode
 from filters import position
 from keyboards.inline import callbacks
+from payment.paypal import pay_with_paypal
 
 
 async def donating_options(call: types.CallbackQuery):
@@ -15,3 +16,8 @@ async def donating_options(call: types.CallbackQuery):
     markup.add(*[types.InlineKeyboardButton(t, callback_data=c) for t, c in options])
 
     await call.message.edit_reply_markup(markup)
+
+
+async def donate_with_paypal(call: types.CallbackQuery):
+    transaction = pay_with_paypal(call.data)
+    print(transaction)

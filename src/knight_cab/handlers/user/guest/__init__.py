@@ -2,6 +2,8 @@ from aiogram import Dispatcher, types
 from aiogram.dispatcher.filters import Text
 import re
 
+from handlers.user.guest.payment.paypal import pay_with_paypal
+
 from .feedback_handler import (
     send_email_feed,
     process_feedback,
@@ -36,8 +38,8 @@ from .registration_handler import (
 
 from .club_exhibit import detail_options
 
-from .donate import donating_options
-
+from .donate import donating_options, donate_with_paypal
+from .payment.direct_bank import display_bank_details
 
 def setup(dp: Dispatcher):
     dp.register_message_handler(
@@ -73,6 +75,12 @@ def setup(dp: Dispatcher):
     )
     dp.register_callback_query_handler(
         donating_options, lambda call: call.data == "donate"
+    )
+    dp.register_callback_query_handler(
+        pay_with_paypal, lambda call: call.data == "paypal"
+    )
+    dp.register_callback_query_handler(
+        display_bank_details, lambda call: call.data == "bank_transfer"
     )
     ############################################################################
     dp.register_message_handler(process_feedback_email, state=FeedBackForm.email)
