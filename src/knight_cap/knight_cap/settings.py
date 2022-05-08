@@ -222,6 +222,10 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="abn", cast=str)
 
 EMAIL_PORT = config("EMAIL_PORT", default=25, cast=int)
 
+LOGIN_REDIRECT_URL = '/club/'
+
+LOGIN_URL = '/accounts/login/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 # if DEBUG:
 #     # The backend to use for sending emails.
