@@ -71,6 +71,12 @@ class User(AbstractBaseUser, PermissionsMixin, Address):
     sex = models.CharField(
         _("sex"), max_length=2, choices=SexChoices.choices, blank=True, null=True
     )
+    bio = models.TextField(
+        _("Bio"), help_text=_("Tell us about your self"), null=True, blank=True
+    )
+    profile_picture = models.ImageField(
+        _("Profile picture"), upload_to="profile_pictures/", default="default.svg"
+    )
     is_staff = models.BooleanField(
         _("staff status"),
         default=False,

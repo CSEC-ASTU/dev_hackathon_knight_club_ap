@@ -32,7 +32,7 @@ class ListDeactivatedClubsView(PermissionRequiredMixin, ListView):
 
     model = Club
     permission_required = ("auser.view_club", "auser.add_club")
-    template_name = "auser/club/list_active.html"
+    template_name = "auser/club/list_deactivated.html"
     context_object_name = "clubs"
     extra_context = {"title": _("Active clubs")}
 
@@ -46,13 +46,14 @@ class ClubCreateView(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     model = Club
     fields = (
         "name",
-        "username",
+        "short_name",
         "sex",
         "email",
         "phone_number",
     )
     permission_required = ("auser.add_club",)
     success_message = "Club '%(short_name)s is successfully created"
+    success_url = reverse_lazy("auser:list_active_clubs")
     template_name = "auser/club/add.html"
     extra_context = {"title": _("Add club")}
 
@@ -69,7 +70,7 @@ class ActivateClubView(PermissionRequiredMixin, SuccessMessageMixin, UpdateView)
     model = Club
     fields = ("is_active",)
     permission_required = ("auser.activate_club",)
-    success_url = reverse_lazy("auser:active_content_creator_list")
+    success_url = reverse_lazy("auser:list_deactivated_clubs")
     success_message = _("%(short_name)s activated successfully")
     http_method_names = ["post"]
 
@@ -98,7 +99,7 @@ class DeactivateClubView(PermissionRequiredMixin, SuccessMessageMixin, UpdateVie
     model = Club
     fields = ("is_active",)
     permission_required = ("auser.deactivate_club",)
-    success_url = reverse_lazy("auser:active_content_creator_list")
+    success_url = reverse_lazy("auser:list_active_clubs")
     success_message = _("%(short_name)s deactivated successfully")
     http_method_names = ["post"]
 
@@ -126,6 +127,10 @@ class UpdateClubView(PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
 
     model = Club
     fields = (
+        "name",
+        "short_name",
+        "logo",
+        "description",
         "email",
         "first_name",
         "last_name",
@@ -137,7 +142,7 @@ class UpdateClubView(PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
         "bio",
     )
     permission_required = ("auser.change_club",)
-    success_url = reverse_lazy("auser:active_content_creator_list")
+    success_url = reverse_lazy("auser:list_active_clubs")
     template_name = "auser/club/update.html"
     success_message = _("%(first_name)s %(last_name)s updated successfully")
     extra_context = {"title": _("Update club")}
@@ -161,7 +166,7 @@ class DeleteClubView(PermissionRequiredMixin, DeleteView):
 
     model = Club
     permission_required = ("auser.delete_club",)
-    success_url = reverse_lazy("auser:deactivated_content_creator_list")
+    success_url = reverse_lazy("auser:list_deactivated_clubs")
     http_method_names = ["post"]
 
     def get_queryset(self):
