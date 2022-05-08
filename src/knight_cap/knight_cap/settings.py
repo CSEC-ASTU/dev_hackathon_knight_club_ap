@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import socket
 from pathlib import Path
 
 from decouple import Csv, config
@@ -204,9 +205,27 @@ FILTERS_VERBOSE_LOOKUPS = {
 # An app which provides customization of the comments framework
 COMMENTS_APP = "comment"
 
-if DEBUG:
-    # The backend to use for sending emails.
-    EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 
-    # The directory used by the file email backend to store output files.
-    EMAIL_FILE_PATH = BASE_DIR / "emails"
+EMAIL_HOST = socket.gethostbyname("smtp.gmail.com")
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+SERVER_EMAIL = config("SERVER_EMAIL")
+
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
+
+# EMAIL_HOST = config("EMAIL_HOST", default="localhost", cast=str)
+
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="", cast=str)
+
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="abn", cast=str)
+
+EMAIL_PORT = config("EMAIL_PORT", default=25, cast=int)
+
+
+# if DEBUG:
+#     # The backend to use for sending emails.
+#     EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+
+#     # The directory used by the file email backend to store output files.
+#     EMAIL_FILE_PATH = BASE_DIR / "emails"
