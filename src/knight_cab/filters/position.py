@@ -4,11 +4,11 @@ from aiogram import types
 
 def get_user_info():
     user_data = {
-        "name": "bura",
-        "username": "bura",
-        "first_name": "bura",
-        "last_name": "bura",
-        "position": "guest",
+        "name": "test",
+        "username": "test",
+        "first_name": "test",
+        "last_name": "test",
+        "position": "admin",
     }
     return user_data
 

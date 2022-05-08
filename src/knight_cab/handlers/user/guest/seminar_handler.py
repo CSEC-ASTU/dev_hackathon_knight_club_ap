@@ -68,7 +68,7 @@ async def process_full_name(message: types.Message, state: FSMContext):
 
 
 async def process_invalid_seminar_email(msg: types.Message):
-    print(msg.text)
+    # print(msg.text)
     return await msg.bot.send_message(msg.from_user.id, "Invalid Email!")
 
 
@@ -122,5 +122,6 @@ async def process_doc(msg: types.File, state: FSMContext):
     await msg.bot.send_message(
         msg.from_user.id, "Thank you for reaching out, your request is being processed!"
     )
+    print(data)
     # Finish conversation
     await state.finish()

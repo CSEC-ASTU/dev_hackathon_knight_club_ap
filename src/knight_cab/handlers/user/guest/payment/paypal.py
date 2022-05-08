@@ -3,7 +3,7 @@ import paypalrestsdk
 import logging
 import os
 
-
+load_dotenv()
 
 paypalrestsdk.configure({
     "mode": os.environ["PAYPAL_MODE"],
