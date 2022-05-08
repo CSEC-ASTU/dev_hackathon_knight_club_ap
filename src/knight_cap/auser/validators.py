@@ -1,4 +1,4 @@
-""" divergentai auser validators
+"""auser validators
 
 	Created by: Wendirad Demelash
 	Last modified by: Wendirad Demelash

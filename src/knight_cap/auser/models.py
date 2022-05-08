@@ -125,6 +125,10 @@ class Club(User):
         verbose_name = _("club")
         verbose_name_plural = _("clubs")
         db_table = "club"
+        permissions = (
+            ("activate_club", "Can activate club"),
+            ("deactivate_club", "Can deactivate club"),
+        )
 
     def __str__(self):
         return self.name
