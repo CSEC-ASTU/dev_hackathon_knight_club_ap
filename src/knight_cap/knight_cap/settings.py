@@ -126,7 +126,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = "/static/"
+STATIC_URL = "/assets/"
+
+STATIC_ROOT = BASE_DIR / 'static'
+
+MEDIA_URL = "/upload/"
+
+MEDIA_ROOT = BASE_DIR / 'upload'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -137,6 +143,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 SITE_ID = 1
 
+
+AUTH_USER_MODEL = "auser.User"
 # A list of authentication backend classes to use when attempting to authenticate a user.
 
 AUTHENTICATION_BACKENDS = [
