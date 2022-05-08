@@ -1,10 +1,14 @@
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils.markdown import bold, hbold, hitalic, hcode
+import filters
 from filters import position
 from keyboards.inline import callbacks
 
 
 async def bot_start(msg: types.Message):
+    print('-' * 20)
+    print(dir(filters))
+    print('-' * 20)
     if position.get_user_position() == "admin":
         pass
     elif position.get_user_position() == "member":
@@ -29,7 +33,7 @@ async def bot_start(msg: types.Message):
             parse_mode="HTML",
             reply_markup=markup,
         )
-    elif position.get_user_position() == "guest":
+    elif position.get_user_position() == "ggguest":
         markup = types.InlineKeyboardMarkup(row_width=2)
         markup.add(
             *[

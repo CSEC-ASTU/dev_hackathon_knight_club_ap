@@ -1,5 +1,6 @@
 from aiogram import Dispatcher, types
 from aiogram.dispatcher.filters import Text
+import re
 
 from .feedback_handler import (
     send_email_feed,
@@ -44,17 +45,17 @@ def setup(dp: Dispatcher):
     )
     dp.register_message_handler(
         process_invalid_feedback_email,
-        lambda message: "@" not in message.text,
+        lambda message: re.match("[^@]+@[^@]+\.[^@]+", message.text) is None,
         state=FeedBackForm.email,
     )
     dp.register_message_handler(
         process_invalid_seminar_email,
-        lambda message: "@" not in message.text,
+        lambda message: re.match("[^@]+@[^@]+\.[^@]+", message.text) is None,
         state=SeminarForm.email,
     )
     dp.register_message_handler(
         process_invalid_reg_email,
-        lambda message: "@" not in message.text,
+        lambda message: re.match("[^@]+@[^@]+\.[^@]+", message.text) is None,
         state=RegistrationForm.email,
     )
     ############################################################################
