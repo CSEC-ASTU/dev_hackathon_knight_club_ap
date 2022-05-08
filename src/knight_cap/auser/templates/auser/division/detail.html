@@ -1,0 +1,16 @@
+<a href="{% url 'auser:club_detail' division.club.slug %}">{{ division.club.name }}</a> >> 
+{% if division.parent %}
+<a href="{% url 'auser:division_detail' division.parent.slug %}">{{ division.parent.name }}</a>
+{% endif %}
+
+{{ division.name }}
+
+<a href="{% url 'auser:add_sub_division' division.slug %}">Add SubDivision</a>
+
+{% for sub_division in division.sub_divisions.iterator %}
+    <li><a href="{% url 'auser:division_detail' sub_division.slug %}">{{ sub_division.name }}</a></li>
+  {% endfor %}
+
+<form method="post" action="{% url 'auser:delete_division' division.slug %}">{% csrf_token %}
+ <button type="submit">Delete This Divison</button>
+</form>

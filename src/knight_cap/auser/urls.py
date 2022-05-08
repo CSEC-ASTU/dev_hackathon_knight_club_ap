@@ -18,23 +18,50 @@ club_urlpatterns = [
         name="list_deactivated_clubs",
     ),
     re_path(r"^add/$", views.ClubCreateView.as_view(), name="add_club"),
-    re_path(r"^(?P<pk>\d+)/$", views.ClubDetailView.as_view(), name="club_detail"),
-    re_path(r"^(?P<pk>\d+)/edit/$", views.UpdateClubView.as_view(), name="edit_club"),
     re_path(
-        r"^(?P<pk>\d+)/delete/$", views.DeleteClubView.as_view(), name="delete_club"
+        r"^(?P<slug>[-a-zA-Z0-9_]+)/$",
+        views.ClubDetailView.as_view(),
+        name="club_detail",
     ),
     re_path(
-        r"^(?P<pk>\d+)/activate/$",
+        r"^(?P<slug>[-a-zA-Z0-9_]+)/edit/$",
+        views.UpdateClubView.as_view(),
+        name="edit_club",
+    ),
+    re_path(
+        r"^(?P<slug>[-a-zA-Z0-9_]+)/delete/$",
+        views.DeleteClubView.as_view(),
+        name="delete_club",
+    ),
+    re_path(
+        r"^(?P<slug>[-a-zA-Z0-9_]+)/activate/$",
         views.ActivateClubView.as_view(),
         name="activate_club",
     ),
     re_path(
-        r"^(?P<pk>\d+)/deactivate/$",
+        r"^(?P<slug>[-a-zA-Z0-9_]+)/deactivate/$",
         views.DeactivateClubView.as_view(),
         name="deactivate_club",
     ),
+    re_path(
+        r"^(?P<club_name>[-a-zA-Z0-9_]+)/division/add/$",
+        views.DivisionCreateView.as_view(),
+        name="add_division",
+    ),
+]
+
+division_urlpatterns = [
+    re_path(
+        r"^add/(?P<division_slug>[-a-zA-Z0-9_]+)/$",
+        views.DivisionCreateView.as_view(),
+        name="add_sub_division",
+    ),
+    re_path(r'^(?P<slug>[-a-zA-Z0-9_]+)/$', views.DivisionDetailView.as_view(), name="division_detail"),
+    re_path(r"^(?P<slug>[-a-zA-Z0-9_]+)/edit/$", views.DivisionUpdateView.as_view(), name='edit_division'),
+    re_path(r"^(?P<slug>[-a-zA-Z0-9_]+)/delete/$", views.DeleteDivisionView.as_view(), name='delete_division'),
 ]
 
 urlpatterns = [
     re_path(r"^club/", include(club_urlpatterns)),
+    re_path(r"^division/", include(division_urlpatterns)),
 ]

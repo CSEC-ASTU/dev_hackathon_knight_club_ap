@@ -9,7 +9,10 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import (Permission, PermissionsMixin,
                                         UserManager)
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.contrib.sites.managers import CurrentSiteManager
+from django.contrib.sites.models import Site
 from django.db import models
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 from auser.validators import PhoneNumberValidator
@@ -90,12 +93,15 @@ class User(AbstractBaseUser, PermissionsMixin, Address):
             "Unselect this instead of deleting account"
         ),
     )
+    host_site = models.ForeignKey(
+        Site, verbose_name=_("site"), on_delete=models.CASCADE, default=1
+    )
     date_joined = models.DateTimeField(_("date joined"), auto_now_add=True)
 
     objects = UserManager()
 
     USERNAME_FIELD = "username"
-    EMAIL_FIELD = ["email"]
+    EMAIL_FIELD = "email"
     REQUIRED_FIELDS = ["email", "sex", "phone_number"]
 
     class Meta:
@@ -119,6 +125,7 @@ class Club(User):
     name = models.CharField(
         _("Club name"), max_length=100, help_text=_("Club long name.")
     )
+    slug = models.SlugField(editable=False, unique=True)
     short_name = models.CharField(
         _("Club short name"), max_length=50, help_text=_("Club short name.")
     )
@@ -139,6 +146,10 @@ class Club(User):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
 
 class Division(models.Model):
     """
@@ -146,8 +157,12 @@ class Division(models.Model):
     """
 
     name = models.CharField(
-        _("Division name"), max_length=100, help_text=_("Division long name.")
+        _("Division name"),
+        max_length=100,
+        help_text=_("Division long name."),
+        unique=True,
     )
+    slug = models.SlugField(editable=False, unique=True)
     short_name = models.CharField(
         _("Division short name"), max_length=50, help_text=_("Division short name.")
     )
@@ -164,47 +179,25 @@ class Division(models.Model):
         null=True,
     )
 
+    members_permissions = models.ManyToManyField(
+        Permission, related_name="members_permissions", blank=True
+    )
+    head_permissions = models.ManyToManyField(
+        Permission, related_name="head_permissions", blank=True
+    )
+
     class Meta:
         verbose_name = _("division")
         verbose_name_plural = _("divisions")
         db_table = "division"
+        unique_together = [('club', 'name')]
 
-    def __str__(self):
-        return self.name
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
 
 class Position(models.Model):
-    """
-    Club position. Used to crete posotopms inside a club.
-    """
-
-    name = models.CharField(
-        _("Position name"), max_length=100, help_text=_("Position long name.")
-    )
-    description = models.TextField(_("Position description"), blank=True, null=True)
-    club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name="positions")
-    division = models.ForeignKey(
-        Division,
-        on_delete=models.CASCADE,
-        related_name="positions",
-        blank=True,
-        null=True,
-        help_text=_("Division to which this position belongs/related."),
-    )
-    permissions = models.ManyToManyField(
-        Permission, related_name="positions", blank=True
-    )
-
-    class Meta:
-        verbose_name = _("position")
-        verbose_name_plural = _("positions")
-        db_table = "position"
-
-    def __str__(self):
-        return self.club.name + " | " + self.name
-
-
-class UserPosition(models.Model):
     """
     Intermidiate model between User and Position. Used to assign position to user.
     """
@@ -217,8 +210,8 @@ class UserPosition(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="user_positions"
     )
-    position = models.ForeignKey(
-        Position, on_delete=models.CASCADE, related_name="users"
+    division = models.ForeignKey(
+        Division, on_delete=models.CASCADE, related_name="position"
     )
     status = models.CharField(
         _("Status"), max_length=10, choices=Status.choices, default=Status.ACTIVE

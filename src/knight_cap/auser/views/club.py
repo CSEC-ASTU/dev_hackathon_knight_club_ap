@@ -49,6 +49,7 @@ class ClubCreateView(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
         "short_name",
         "sex",
         "email",
+        "host_site",
         "phone_number",
     )
     permission_required = ("auser.add_club",)
@@ -157,8 +158,15 @@ class ClubDetailView(PermissionRequiredMixin, DetailView):
     model = Club
     template_name = "auser/club/detail.html"
     extra_context = {"title": _("Club")}
-    permission_required = ("auser.view_club", "auser.add_club")
+    permission_required = ("auser.view_club",)
     context_object_name = "club"
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        user = self.request.user
+        if user.is_superuser:
+            return qs
+        return qs.filter(id=user.id)
 
 
 class DeleteClubView(PermissionRequiredMixin, DeleteView):

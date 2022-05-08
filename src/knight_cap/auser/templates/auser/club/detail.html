@@ -1,6 +1,13 @@
 {% extends "layouts/main.html" %}
 {% load i18n %}
 {% block content %}
+{{ club.email }}
+<a href="{% url 'auser:add_division' club.slug %}">Add Division</a>
+<ul>
+    {% for division in club.divisions.iterator %}
+    <li><a href="{% url 'auser:division_detail' division.slug %}">{{ division.name }}</a></li>
+    {% endfor %}
+</ul>
 <ul class="nav nav-tabs mt-5 mb-3" id="UserDetail" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="home" aria-selected="true">{% translate "Profile" %}</button>
