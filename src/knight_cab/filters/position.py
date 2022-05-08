@@ -1,13 +1,14 @@
 from data import auth
 from aiogram import types
+import requests
 
 
 def get_user_info():
     user_data = {
-        "name": "bura",
-        "username": "bura",
-        "first_name": "bura",
-        "last_name": "bura",
+        "name": "test",
+        "username": "test",
+        "first_name": "test",
+        "last_name": "test",
         "position": "guest",
     }
     return user_data
