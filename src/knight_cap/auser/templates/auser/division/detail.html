@@ -1,6 +1,7 @@
 {% extends "layouts/main.html" %}
 {% load i18n %}
 {% block content %}
+<h2 class="text-danger">{{ division.name }}</h2>
 <a class="btn btn-light" href="{% url 'auser:club_detail' division.club.slug %}">{{ division.club.name }}</a> >> 
 {% if division.parent %}
 <a class="btn btn-light" href="{% url 'auser:division_detail' division.parent.slug %}">{{ division.parent.name }} >></a>
