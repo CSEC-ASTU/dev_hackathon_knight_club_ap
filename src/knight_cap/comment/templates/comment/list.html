@@ -1,0 +1,81 @@
+{% extends "layouts/main.html" %}
+{% load i18n static humanize comments %}
+{% block content %}
+{% load i18n static comments humanize auser %}
+
+<table class="table shadow-lg w-100" id="dt_table_blogs">
+    <thead>
+        <tr>
+            <th></th>
+            <th>{% translate "User" %}</th>
+            <th>{% translate "Comment" %}</th>
+            <th>{% translate "IP Address" %}</th>
+            <th>{% translate "Is public" %}</th>
+            <th>{% translate "Removed" %}</th>
+            <th>{% translate "Commented on" %}</th>
+            <th>{% translate "Preview" %}</th>
+            <th>{% translate "Manage" %}</th>
+        </tr>
+    </thead>
+    <tbody class="w-100">
+        {% for comment in comments %}
+            <td>{{ forloop.counter }}</td>
+            <td>{{ comment.user.get_full_name }}</td>
+            <td>{{ comment.comment }}</td>
+            <td>{{ comment.ip_address }}</td>
+            <td>{{ comment.is_public }}</td>
+            <td>{{ comment.is_removed }}</td>
+            <td>{{ comment.submit_date }}</td>
+            <td>
+                <button type="button"
+                        class="btn btn-sm btn-success d-flex"
+                        data-bs-toggle="modal"
+                        data-bs-target="#comment-{{ forloop.counter }}">
+                    Preview
+                </button>
+            </td>
+            <td>
+                <!-- Vertically Centered modal Modal -->
+                <div class="modal fade"
+                        id="comment-{{ forloop.counter }}"
+                        tabindex="-1"
+                        role="dialog"
+                        aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
+                            role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    {{ comment.user.get_full_name }} <span class="text-muted text-sm d-flex-">{{ comment.submit_date }}</span>
+                                </h5>
+                                <button type="button"
+                                        class="close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close">
+                                    <i data-feather="x"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    {{ comment.comment }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if comment.is_public %}
+                    <form action="{% url "comment:make_private" comment.pk %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-info btn-sm">Make Private</button>
+                    </form>
+                {% else %}
+                    <form action="{% url "comment:make_public" comment.pk %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-primary btn-sm">Make Public</button>
+                    </form>
+                {% endif %}
+            </td>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

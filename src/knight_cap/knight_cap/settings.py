@@ -15,6 +15,7 @@ from pathlib import Path
 from decouple import Csv, config
 from dj_database_url import parse as db_url
 
+from django.contrib.messages import constants as messages
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -47,8 +48,15 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.github",
     "widget_tweaks",
+    "ckeditor",
+    "django_social_share",
+    "django_filters",
+    "django_comments",
     # Local apps
     "auser",
+    "blog",
+    "comment",
+    "forum",
 ]
 
 MIDDLEWARE = [
@@ -130,7 +138,7 @@ USE_TZ = True
 
 STATIC_URL = "/assets/"
 
-STATIC_ROOT = BASE_DIR / "static"
+STATIC_ROOT = BASE_DIR / "assetts"
 
 MEDIA_URL = "/upload/"
 
@@ -164,6 +172,11 @@ ACCOUNT_USERNAME_BLACKLIST = config(
     "RESERVED_USERNAMES", cast=Csv(post_process=list), default=[]
 )
 
+# This setting defines the additional locations the staticfiles app will traverse
+STATICFILES_DIRS = (
+    BASE_DIR / "static",
+)
+
 SOCIALACCOUNT_PROVIDERS = {
     "github": {
         "SCOPE": [
@@ -174,6 +187,24 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+MESSAGE_TAGS = {
+    messages.DEBUG: "alert-secondary",
+    messages.INFO: "alert-info",
+    messages.SUCCESS: "alert-success",
+    messages.WARNING: "alert-warning",
+    messages.ERROR: "alert-danger",
+}
+
+
+FILTERS_VERBOSE_LOOKUPS = {
+    "exact": "",
+    "iexact": "",
+    "contains": "",
+    "icontains": "",
+}
+
+# An app which provides customization of the comments framework
+COMMENTS_APP = "comment"
 
 if DEBUG:
     # The backend to use for sending emails.

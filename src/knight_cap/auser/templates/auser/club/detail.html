@@ -1,13 +1,7 @@
 {% extends "layouts/main.html" %}
 {% load i18n %}
 {% block content %}
-{{ club.email }}
-<a href="{% url 'auser:add_division' club.slug %}">Add Division</a>
-<ul>
-    {% for division in club.divisions.iterator %}
-    <li><a href="{% url 'auser:division_detail' division.slug %}">{{ division.name }}</a></li>
-    {% endfor %}
-</ul>
+<a class="btn btn-primary" href="{% url 'auser:add_division' club.slug %}">Add Division</a>
 <ul class="nav nav-tabs mt-5 mb-3" id="UserDetail" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="home" aria-selected="true">{% translate "Profile" %}</button>
@@ -21,6 +15,7 @@
 </ul>
 <div class="tab-content" id="UserDetailContent">
 <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="home-tab">
+    {% include "auser/division/list.html" with divisions=club.divisions.iterator %}
 </div>
 <div class="tab-pane fade" id="activity" role="tabpanel" aria-labelledby="profile-tab">
 </div>
@@ -28,3 +23,4 @@
 </div>
 </div>
 {% endblock content %}
+{% block js %}<script>$('#dt_table_active_clubs').DataTable({}) </script>{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "layouts/main.html" %}
+{% load i18n static humanize auser comments %}
+{% block content %}
+<ul class="nav nav-tabs mt-5 mb-3" id="UserDetail" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab" aria-controls="home" aria-selected="true">{% translate "Blog Posts" %}</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link"  data-bs-toggle="tab" data-bs-target="#categories" type="button" role="tab" aria-controls="profile" aria-selected="false">{% translate "Categories" %}</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link"  data-bs-toggle="tab" data-bs-target="#tags" type="button" role="tab" aria-controls="contact" aria-selected="false">{% translate "Tags" %}</button>
+    </li>
+</ul>
+<div class="tab-content" id="UserDetailContent">
+<div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="post-tab">
+    {% include "blog/post/list.html" with posts=posts %}
+</div>
+<div class="tab-pane fade" id="categories" role="tabpanel" aria-labelledby="categories-tab">
+    {% include "blog/category/list.html" with categories=categories %}
+</div>
+<div class="tab-pane fade" id="tags" role="tabpanel" aria-labelledby="tag-tab">
+    {% include "blog/tag/list.html" with tags=tags %}
+</div>
+</div>
+{% endblock content %}
+

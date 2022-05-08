@@ -1,0 +1,59 @@
+{% extends 'bases/main.html' %} {% block extra-style %} {% load static %}
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+<meta name="google" content="notranslate" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" /> {% endblock extra-style %} {% block content %}
+<style>
+    body {
+        font-family: "Roboto", sans-serif;
+        font-size: 18px;
+        background-color: #fdfdfd;
+    }
+    
+    .head_text {
+        color: white;
+    }
+    
+    .card {
+        box-shadow: 0 16px 48px #E3E7EB;
+    }
+</style>
+<div>
+    <a href="{% url 'add_blog' %}">ADD BLOG</a>
+</div>
+<div class="container">
+    <div class="row">
+        <!-- Blog Entries Column -->
+        <div class="col-md-8 mt-3 float-left">
+            {% for post in post_list %}
+
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">{{ post.title }}</h2>
+                    <p class="card-text text-muted h6">{{ post.author}} | {{ post.created_on}} </p>
+                    <p class="card-text">{{post.content|safe|truncatewords:30 }}
+
+                    </p>{{ post.slug }} dgfsd
+                    <a href="{% url 'post_detail' post.slug  %}" class="btn btn-primary">Read More &rarr;</a>
+                    <div>
+                        <h1>
+                            {{ request.user.username }}
+                        </h1>
+                        <div>
+                            <p>- {{ post.likes.count }} Likes</p>
+                        </div>
+                    </div>
+                </div>
+            </div> {% endfor %}
+        </div>
+        <!-- <div class="col-12 bg-danger">
+            am here
+        </div> -->
+    </div>
+</div>{% endblock %}{% block extra-script %}{% block sidebar %}
+<div class="">
+    {% include 'blog/sidebar.html' %}
+</div>{% endblock sidebar %}
+<!-- <br> bootstrap js file -->
+<script src="{% static 'js/bootstrap.js' %} "></script>{% endblock extra-script %}

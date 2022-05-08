@@ -2,106 +2,36 @@
         <nav id="sidebar" class="col-auto collapse collapse-horizontal show pt-1 px-0 mx-0 sticky-md-top">
           <div class="row sidebar-nav mx-0">
             <div class="d-flex justify-content-center">
-              <a class="mx-auto mt-4 mb-5" href=""><img src="{% static 'img/logo.svg' %}" alt="gradient info system logo" class="img-fluid rounded-circle logo-img" /></a>
+              <a class="mx-auto mt-4 mb-5" href=""><img src="{% static 'img/logo.svg' %}" alt="The Knight" class="img-fluid rounded-circle logo-img" /></a>
             </div>
-            {% if perms.auser.view_contentcreator or perms.auser.view_staff or perms.auser.view_student %}<div class="text-dark px-4 fs-4">{% translate "Users" %}</div>{% endif %}
-            <ul class="px-0">{% if perms.auser.view_student %}
-              <li class="nav-item my-1 mx-0 row flex-nowrap align-items-center text-light">
-                <div class="col p-2 ps-3 text-center">
-                  <img class="img-sidebar" src="{% static 'img/student.svg' %}" >
-                </div>
-                <div class="col-10">
-                  <a class="nav-link px-0 text-reset text-decoration-none" href="">{% translate "Students" %}</a>
-                </div>
-              </li>{% endif %}{% if perms.auser.view_instructor %}
-              <li class="nav-item my-1 mx-0 row flex-nowrap align-items-center text-light">
-                <div class="col p-2 ps-3 text-center">
-                  <img class="img-sidebar" src="{% static 'img/teacher.svg' %}" >
-                </div>
-                <div class="col-10">
-                  <a class="nav-link px-0 text-reset text-decoration-none" href="">{% translate "Instructors" %}</a>
-                </div>
-              </li>{% endif %}{% if perms.auser.view_contentcreator %}
+            <ul class="px-0">
               <li class="nav-item my-1 mx-0 row flex-nowrap align-items-center text-light">
                 <div class="col py-2 px-3 text-center">
-                  <i data-feather="user"></i>
+                  <i data-feather="home"></i>
                 </div>
                 <div class="col-10">
-                  <a class="nav-link px-0 text-reset text-decoration-none" href="">{% translate "Content Creators" %}</a>
+                  <a class="nav-link px-0 text-reset text-decoration-none" href="{% url 'auser:list_active_clubs' %}">{% translate "Clubs " %}</a>
                 </div>
-              </li>{% endif %}{% if perms.auser.view_staff %}
-              <li class="nav-item my-1 mx-0 row flex-nowrap align-items-center text-light">
-                <div class="col py-2 px-3 text-center">
-                  <i data-feather="user"></i>
-                </div>
-                <div class="col-10">
-                  <a class="nav-link px-0 text-reset text-decoration-none" href="">{% translate "Staff Members" %}</a>
-                </div>
-              </li>{% endif %}
+              </li>
             </ul>
           </div>
           <div class="row sidebar-nav mx-0">{% if perms.blog.view_post or perms.blog.add_post %}
             <div class="text-dark px-4 fs-4">{% translate "Contents" %}</div>{% endif %}
-            <ul class="px-0">{% if perms.course.view_course %}
+            <ul class="px-0">
               <li class="nav-item my-1 mx-0 row flex-nowrap align-items-center text-light">
                 <div class="col py-2 px-3 text-center">
                   <i data-feather="user"></i>
                 </div>
                 <div class="col-10">
-                  <a class="nav-link px-0 text-reset text-decoration-none" href="">{% translate "Courses" %}</a>
+                  <a class="nav-link px-0 text-reset text-decoration-none" href="{% url 'blog:list_post_admin' %}">{% translate "Blogs" %}</a>
                 </div>
-              </li>{% endif %}{% if perms.blog.view_post %}
-              <li class="nav-item my-1 mx-0 row flex-nowrap align-items-center text-light">
-                <div class="col py-2 px-3 text-center">
-                  <i data-feather="user"></i>
-                </div>
-                <div class="col-10">
-                  <a class="nav-link px-0 text-reset text-decoration-none" href="">{% translate "Blogs" %}</a>
-                </div>
-              </li>{% endif %}{% if perms.forum.view_forum %}
+              </li>{% if perms.forum.view_forum %}
               <li class="nav-item my-1 mx-0 row flex-nowrap align-items-center text-light">
                 <div class="col py-2 px-3 text-center">
                   <i data-feather="user"></i>
                 </div>
                 <div class="col-10">
                   <a class="nav-link px-0 text-reset text-decoration-none" href="#courses">{% translate "Forums" %}</a>
-                </div>
-              </li>{% endif %}
-            </ul>
-          </div>
-          <div class="row sidebar-nav mx-0">{% if perms.pages.view_serice or perms.pages.add_service %}
-            <div class="text-dark px-4 fs-4">{% translate "Pages" %}</div>{% endif %}
-            <ul class="px-0">{% if perms.pages.view_service %}
-              <li class="nav-item my-1 mx-0 row flex-nowrap align-items-center text-light">
-                <div class="col py-2 px-3 text-center">
-                  <i data-feather="user"></i>
-                </div>
-                <div class="col-10">
-                  <a class="nav-link px-0 text-reset text-decoration-none" href="">{% translate "Services" %}</a>
-                </div>
-              </li>{% endif %}{% if perms.pages.view_ad %}
-              <li class="nav-item my-1 mx-0 row flex-nowrap align-items-center text-light">
-                <div class="col py-2 px-3 text-center">
-                  <i data-feather="user"></i>
-                </div>
-                <div class="col-10">
-                  <a class="nav-link px-0 text-reset text-decoration-none" href="#add">{% translate "Ads" %}</a>
-                </div>
-              </li>{% endif %}{% if perms.page.view_flatpage %}
-              <li class="nav-item my-1 mx-0 row flex-nowrap align-items-center text-light">
-                <div class="col py-2 px-3 text-center">
-                  <i data-feather="user"></i>
-                </div>
-                <div class="col-10">
-                  <a class="nav-link px-0 text-reset text-decoration-none" href="#">{% translate "Static Pages" %}</a>
-                </div>
-              </li>{% endif %}{% if perms.page.view_faq %}
-              <li class="nav-item my-1 mx-0 row flex-nowrap align-items-center text-light">
-                <div class="col py-2 px-3 text-center">
-                  <i data-feather="user"></i>
-                </div>
-                <div class="col-10">
-                  <a class="nav-link px-0 text-reset text-decoration-none" href="">{% translate "FAQs" %}</a>
                 </div>
               </li>{% endif %}
             </ul>
