@@ -1,16 +1,20 @@
-<a href="{% url 'auser:club_detail' division.club.slug %}">{{ division.club.name }}</a> >> 
+{% extends "layouts/main.html" %}
+{% load i18n %}
+{% block content %}
+<a class="btn btn-light" href="{% url 'auser:club_detail' division.club.slug %}">{{ division.club.name }}</a> >> 
 {% if division.parent %}
-<a href="{% url 'auser:division_detail' division.parent.slug %}">{{ division.parent.name }}</a>
+<a class="btn btn-light" href="{% url 'auser:division_detail' division.parent.slug %}">{{ division.parent.name }} >></a>
 {% endif %}
+<a class="btn btn-light" href="{% url 'auser:add_sub_division' division.slug %}">Add Sub Division</a>
+<ul class="nav nav-tabs mt-5 mb-3" id="UserDetail" role="tablist">
+</ul>
+<div class="tab-content" id="UserDetailContent">
+<div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="home-tab">
+    {% include "auser/division/list.html" with divisions=division.sub_divisions.iterator %}
+</div>
 
-{{ division.name }}
+</div>
+{% endblock content %}
+{% block js %}<script>$('#dt_table_active_clubs').DataTable({}) </script>{% endblock %}
 
-<a href="{% url 'auser:add_sub_division' division.slug %}">Add SubDivision</a>
 
-{% for sub_division in division.sub_divisions.iterator %}
-    <li><a href="{% url 'auser:division_detail' sub_division.slug %}">{{ sub_division.name }}</a></li>
-  {% endfor %}
-
-<form method="post" action="{% url 'auser:delete_division' division.slug %}">{% csrf_token %}
- <button type="submit">Delete This Divison</button>
-</form>

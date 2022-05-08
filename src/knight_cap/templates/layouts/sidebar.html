@@ -25,15 +25,7 @@
                 <div class="col-10">
                   <a class="nav-link px-0 text-reset text-decoration-none" href="{% url 'blog:list_post_admin' %}">{% translate "Blogs" %}</a>
                 </div>
-              </li>{% if perms.forum.view_forum %}
-              <li class="nav-item my-1 mx-0 row flex-nowrap align-items-center text-light">
-                <div class="col py-2 px-3 text-center">
-                  <i data-feather="user"></i>
-                </div>
-                <div class="col-10">
-                  <a class="nav-link px-0 text-reset text-decoration-none" href="#courses">{% translate "Forums" %}</a>
-                </div>
-              </li>{% endif %}
+              </li>
             </ul>
           </div>
         </nav>
